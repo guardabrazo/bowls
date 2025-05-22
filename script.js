@@ -3,18 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // IMPORTANT: Replace these placeholder URLs with your actual 12 Cloudinary video URLs
     const videoUrls = [
-        "YOUR_VIDEO_URL_1", // Replace with your Cloudinary URL for video 1
-        "YOUR_VIDEO_URL_2", // Replace with your Cloudinary URL for video 2
-        "YOUR_VIDEO_URL_3", // etc.
-        "YOUR_VIDEO_URL_4",
-        "YOUR_VIDEO_URL_5",
-        "YOUR_VIDEO_URL_6",
-        "YOUR_VIDEO_URL_7",
-        "YOUR_VIDEO_URL_8",
-        "YOUR_VIDEO_URL_9",
-        "YOUR_VIDEO_URL_10",
-        "YOUR_VIDEO_URL_11",
-        "YOUR_VIDEO_URL_12"
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4", // Replace with your Cloudinary URL for video 1
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4", // Replace with your Cloudinary URL for video 2
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4", // etc.
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4",
+        "https://res.cloudinary.com/dazckbnuv/video/upload/v1747882474/hc3x87os4bqenspsgy8d.mp4"
     ];
 
     if (videoGrid) {
