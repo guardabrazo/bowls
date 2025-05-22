@@ -68,6 +68,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 videoElement.muted = false;
                 videoElement.loop = true;
                 videoElement.playsInline = true;
+                videoElement.preload = 'metadata'; // Add preload attribute
+
+                // Generate poster URL from video URL (Cloudinary specific transformation)
+                // Assumes standard Cloudinary URL structure.
+                // Example: .../upload/v123/video.mp4 -> .../upload/so_0/v123/video.jpg
+                let posterUrl = url.replace('/video/upload/', '/video/upload/so_0/'); // Add start offset 0 for first frame
+                posterUrl = posterUrl.substring(0, posterUrl.lastIndexOf('.')) + '.jpg'; // Change extension
+                videoElement.poster = posterUrl;
 
                 const playButton = document.createElement('button'); // Renamed for clarity
                 playButton.className = 'play-pause-button'; // CSS class remains for styling
