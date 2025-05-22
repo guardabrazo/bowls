@@ -26,13 +26,15 @@ nav a {
     text-decoration: none;
     margin: 0; /* Removed margin as it's a single button */
     padding: 10px 15px; /* Add some padding to the button itself */
-    background-color: rgba(0,0,0,0.5); /* Optional: slight background for button */
-    border-radius: 5px; /* Optional: rounded corners */
+    /* background-color: rgba(0,0,0,0.5); Removed background */
+    /* border-radius: 5px; Removed border-radius */
     font-size: 1.2em;
+    background-color: transparent !important; /* Ensure no background */
 }
 
 nav a:hover {
     text-decoration: underline;
+    background-color: transparent !important; /* Ensure no background on hover */
 }
 
 .video-grid-container {
@@ -150,57 +152,74 @@ nav a:hover {
 
 /* Modal Styles */
 .modal {
-    display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 2000; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
     background-color: rgba(0,0,0,0.6); /* Black w/ opacity for backdrop */
-    opacity: 0; /* Start fully transparent for fade-in */
-    transition: opacity 0.3s ease-in-out;
+    
+    display: flex; /* Always flex for layout */
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0; /* Start fully transparent */
+    visibility: hidden; /* Start hidden */
+    transition: opacity 0.4s ease-in-out, visibility 0s linear 0.4s; /* Delay visibility until opacity transition ends */
+    /* The visibility transition makes it disappear from accessibility tree after fade out */
 }
 
 .modal.show {
-    display: flex; /* Use flex to center content */
-    align-items: center;
-    justify-content: center;
     opacity: 1;
+    visibility: visible;
+    transition: opacity 0.4s ease-in-out, visibility 0s linear 0s; /* Show immediately */
 }
 
 .modal-content {
     background-color: #fff;
     color: #333; /* Darker text for white background */
-    margin: auto;
-    padding: 30px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 500px;
+    margin: 0; /* Remove margin for fullscreen */
+    padding: 40px; /* Increased padding */
+    border-radius: 0; /* No border radius for fullscreen */
+    width: 100%; /* Fullscreen width */
+    height: 100%; /* Fullscreen height */
+    display: flex; /* Use flex to center inner content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     position: relative;
     text-align: center;
-    font-size: 1.1em;
-    line-height: 1.6;
-    transform: scale(0.9); /* Start slightly smaller for pop effect */
-    transition: transform 0.3s ease-in-out;
+    font-size: 1.2em; /* Slightly larger font */
+    line-height: 1.7; /* Default line height for modal content */
+    
+    /* transform: scale(0.95); Removed scaling effect */
+    /* Opacity of content is handled by parent .modal's opacity for simplicity of fade */
+    /* transition: transform 0.4s ease-in-out; Removed transform transition */
+    box-sizing: border-box; /* Ensure padding is included in width/height */
 }
 
-.modal.show .modal-content {
-    transform: scale(1);
+/* .modal.show .modal-content { */
+    /* transform: scale(1); Removed scaling effect */
+/* } */
+
+/* Reduce line height specifically for paragraphs in the welcome modal */
+#welcome-modal .modal-content p {
+    line-height: 1.4; /* Adjust as needed */
+    margin-bottom: 0px; /* Reduced space before the button */
 }
 
 .modal-content p a {
-    color: #007bff; /* Standard link blue, or choose another */
+    color: #000; /* Black links */
     text-decoration: underline;
 }
 
 .modal-content p a:hover {
-    color: #0056b3;
+    color: #333; /* Darker gray on hover */
 }
 
 .close-button {
-    color: #aaa;
+    color: #333; /* Make X black for white background */
     position: absolute;
     top: 10px;
     right: 20px;
@@ -214,6 +233,35 @@ nav a:hover {
     color: #333; /* Darker on hover for white background */
     text-decoration: none;
 }
+
+.modal-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-family: "Space Grotesk", Arial, sans-serif;
+}
+
+#start-button.modal-button { /* Specific styling for start button */
+    background-color: transparent;
+    color: #000;
+    text-decoration: underline;
+    padding: 10px 0; /* Adjust padding if only text */
+    font-size: 2.4em; /* Match modal text size */
+}
+
+#start-button.modal-button:hover {
+    background-color: transparent;
+    color: #555; /* Slightly lighter black on hover */
+}
+
 
 /* Video Wrapper and Play/Pause Button Styles */
 .video-wrapper {
@@ -237,24 +285,29 @@ nav a:hover {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: transparent; /* Removed background */
     color: white;
     border: none;
-    border-radius: 50%;
-    width: 60px; /* Adjust size as needed */
-    height: 60px; /* Adjust size as needed */
-    font-size: 24px; /* Adjust icon size */
+    /* border-radius: 50%; Removed rounded border for circle */
+    width: auto; /* Adjust size as needed, auto for icon */
+    height: auto; /* Adjust size as needed, auto for icon */
+    font-size: 48px; /* Adjust icon size - made larger for visibility */
     cursor: pointer;
-    display: flex;
+    display: none; /* Initially hidden, shown when video is paused */
     align-items: center;
     justify-content: center;
-    opacity: 0.7;
-    transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    opacity: 0.8; /* Slight transparency */
+    transition: opacity 0.2s ease-in-out;
+    text-shadow: 0px 0px 10px rgba(0,0,0,0.7); /* Add shadow for better visibility */
 }
 
 .play-pause-button:hover {
     opacity: 1;
-    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Show button only when video is paused and wrapper is hovered (optional) or always when paused */
+.video-wrapper video:paused + .play-pause-button {
+    display: flex; /* Show button when video is paused */
 }
 
 /* Style for when video is playing - button could be less prominent or hidden */

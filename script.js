@@ -2,7 +2,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const videoGrid = document.querySelector('.video-grid-container');
     const aboutButton = document.getElementById('about-button');
     const aboutModal = document.getElementById('about-modal');
-    const closeButton = document.querySelector('.close-button');
+    const closeAboutModalButton = document.getElementById('close-about-modal'); // Corrected ID
+    
+    const welcomeModal = document.getElementById('welcome-modal');
+    const startButton = document.getElementById('start-button');
 
     // IMPORTANT: Replace these placeholder URLs with your actual 15 Cloudinary video URLs
     const videoUrls = [
@@ -23,14 +26,24 @@ document.addEventListener('DOMContentLoaded', function() {
         "https://res.cloudinary.com/dazckbnuv/video/upload/v1747885242/bowls_10_praatz.mp4"
     ];
 
-    // Modal functionality
-    if (aboutButton && aboutModal && closeButton) {
+    // Welcome Modal functionality
+    if (welcomeModal && startButton) {
+        // Show welcome modal on page load (already done by adding 'show' class in HTML)
+        // setTimeout(() => { welcomeModal.classList.add('show'); }, 50); // Small delay for CSS transition
+
+        startButton.addEventListener('click', function() {
+            welcomeModal.classList.remove('show');
+        });
+    }
+
+    // About Modal functionality
+    if (aboutButton && aboutModal && closeAboutModalButton) {
         aboutButton.addEventListener('click', function(event) {
             event.preventDefault();
             aboutModal.classList.add('show');
         });
 
-        closeButton.addEventListener('click', function() {
+        closeAboutModalButton.addEventListener('click', function() {
             aboutModal.classList.remove('show');
         });
 
@@ -47,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         videoUrls.forEach((url, index) => {
             const isPlaceholder = url.startsWith("YOUR_VIDEO_URL_");
             const videoWrapper = document.createElement('div');
-            videoWrapper.className = 'video-wrapper'; // For positioning the button
+            videoWrapper.className = 'video-wrapper'; 
 
             if (url && !isPlaceholder) {
                 const videoElement = document.createElement('video');
@@ -56,27 +69,42 @@ document.addEventListener('DOMContentLoaded', function() {
                 videoElement.loop = true;
                 videoElement.playsInline = true;
 
-                const playPauseButton = document.createElement('button');
-                playPauseButton.className = 'play-pause-button';
-                playPauseButton.innerHTML = '&#9658;'; // Play icon
+                const playButton = document.createElement('button'); // Renamed for clarity
+                playButton.className = 'play-pause-button'; // CSS class remains for styling
+                playButton.innerHTML = '&#9658;'; // Play icon
 
-                playPauseButton.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent click from bubbling to videoWrapper if needed
+                // Clicking the play button
+                playButton.addEventListener('click', function(e) {
+                    e.stopPropagation(); 
                     if (videoElement.paused) {
                         videoElement.play().catch(error => console.log(`Error playing video ${index + 1}: `, error));
-                        playPauseButton.innerHTML = '&#10074;&#10074;'; // Pause icon
-                    } else {
+                    } 
+                    // No 'else' to pause, as clicking video itself will pause
+                });
+
+                // Clicking the video to pause
+                videoElement.addEventListener('click', function() {
+                    if (!videoElement.paused) {
                         videoElement.pause();
-                        playPauseButton.innerHTML = '&#9658;'; // Play icon
                     }
+                    // If video is already paused, clicking it does nothing here.
+                    // The play button is responsible for starting playback.
                 });
                 
-                // Update button on video events (e.g. if video ends and loops, or is paused by other means)
-                videoElement.onplay = () => playPauseButton.innerHTML = '&#10074;&#10074;';
-                videoElement.onpause = () => playPauseButton.innerHTML = '&#9658;';
+                // Update play button visibility based on video state
+                videoElement.onplay = () => {
+                    playButton.style.display = 'none'; // Hide play button when playing
+                };
+                videoElement.onpause = () => {
+                    playButton.style.display = 'flex'; // Show play button when paused
+                };
+                
+                // Initial state: video is paused, so button should be visible
+                playButton.style.display = 'flex';
+
 
                 videoWrapper.appendChild(videoElement);
-                videoWrapper.appendChild(playPauseButton);
+                videoWrapper.appendChild(playButton); // Add the play button
                 videoGrid.appendChild(videoWrapper);
 
             } else {
