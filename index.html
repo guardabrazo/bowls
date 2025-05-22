@@ -4,16 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bowls - Video Grid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <nav>
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
+        <a href="#" id="about-button">About</a>
     </nav>
     <div class="video-grid-container">
         <!-- Videos will be added here -->
     </div>
+
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <p>A project by <a href="https://www.guardabrazo.com" target="_blank" rel="noopener noreferrer">Guardabrazo</a> for <a href="https://www.specialguestx.com" target="_blank" rel="noopener noreferrer">SpecialGuestX</a>.</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

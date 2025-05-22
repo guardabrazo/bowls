@@ -1,28 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
 body, html {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: "Space Grotesk", Arial, sans-serif;
     background-color: #000;
     color: #fff;
 }
 
 nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 10px 20px;
+    top: 20px; /* Adjusted for better spacing */
+    right: 20px; /* Position to the right */
+    /* width: 100%; Remove width to not span full */
+    background-color: transparent; /* Making nav background transparent as it's just one button */
+    /* padding: 10px 20px; Adjusted padding below */
     box-sizing: border-box;
     z-index: 1000;
-    text-align: center;
+    /* text-align: center; No longer needed */
 }
 
 nav a {
     color: #fff;
     text-decoration: none;
-    margin: 0 15px;
+    margin: 0; /* Removed margin as it's a single button */
+    padding: 10px 15px; /* Add some padding to the button itself */
+    background-color: rgba(0,0,0,0.5); /* Optional: slight background for button */
+    border-radius: 5px; /* Optional: rounded corners */
     font-size: 1.2em;
 }
 
@@ -32,32 +37,93 @@ nav a:hover {
 
 .video-grid-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 videos per row */
+    grid-template-columns: repeat(5, 1fr); /* 5 videos per row */
     grid-template-rows: repeat(3, 1fr);    /* 3 rows */
     width: 100vw;
     height: 100vh;
     overflow: hidden; /* Hide scrollbars */
 }
 
-/* Responsive grid adjustments */
+/* Responsive grid adjustments for 15 videos (5x3 base) */
+/* Adjusting breakpoints and layouts for a more panoramic feel */
+
+@media (max-width: 1600px) { /* Large screens, slightly less columns */
+    .video-grid-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 videos per row */
+        /* This would require more rows or fewer videos to fit 15.
+           Let's assume we want to keep 15 videos, so we need to adjust rows.
+           If we have 4 columns, we'd need 4 rows for 15 videos (3 full, 1 partial).
+           Or, we can aim for a layout that still shows all 15.
+           Let's try to maintain 15 videos. 4 columns means 15/4 = ~3.75 rows.
+           This doesn't make a clean grid.
+           Let's rethink responsive for 15 videos.
+           Perhaps 3 columns for tablets. 15 videos / 3 columns = 5 rows.
+           And 2 columns for phones. 15 videos / 2 columns = 7.5 rows (not ideal).
+           Or 1 column for phones = 15 rows.
+        */
+    }
+}
+
+
 @media (max-width: 1200px) { /* Medium-large screens / tablets in landscape */
     .video-grid-container {
         grid-template-columns: repeat(3, 1fr); /* 3 videos per row */
-        grid-template-rows: repeat(4, 1fr);    /* 4 rows */
+        grid-template-rows: repeat(5, 1fr);    /* 5 rows (3x5 = 15 videos) */
     }
 }
 
 @media (max-width: 768px) { /* Smaller tablets / large phones */
     .video-grid-container {
         grid-template-columns: repeat(2, 1fr); /* 2 videos per row */
-        grid-template-rows: repeat(6, 1fr);    /* 6 rows */
+        /* For 15 videos, this means 7 full rows and 1 row with 1 video.
+           Or we can make it 8 rows and the last row will have one video taking full width
+           or two cells with one empty. Let's aim for 8 rows, last video might be centered or larger.
+           For simplicity, let's make it 8 rows, and CSS grid will handle flow.
+        */
+        grid-template-rows: repeat(8, 1fr); /* Approx 2x8, last row might be sparse */
+        /* A cleaner way for 15 items in 2 columns is not possible with pure grid rows like this.
+           The items will flow. 15 items / 2 columns = 7.5. So 7 full rows, 1 item on 8th.
+           The grid will create 8 rows if items flow into them.
+        */
     }
 }
+
 
 @media (max-width: 480px) { /* Mobile phones */
     .video-grid-container {
         grid-template-columns: 1fr; /* 1 video per row */
-        grid-template-rows: repeat(12, 1fr); /* 12 rows */
+        grid-template-rows: repeat(15, 1fr); /* 15 rows (1x15 = 15 videos) */
+    }
+}
+
+/* Let's simplify the responsive breakpoints for a 5x3 grid (15 videos) */
+/* Base: 5 columns, 3 rows */
+
+@media (max-width: 1280px) { /* Slightly smaller desktops / large tablets */
+    .video-grid-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 videos per row */
+        /* 15 videos / 4 columns = 3.75. Grid will make 4 rows. */
+    }
+}
+
+@media (max-width: 992px) { /* Tablets */
+    .video-grid-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 videos per row */
+        grid-template-rows: repeat(5, 1fr);    /* 3x5 = 15 videos */
+    }
+}
+
+@media (max-width: 768px) { /* Large phones / Small tablets portrait */
+    .video-grid-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 videos per row */
+        /* 15 videos / 2 columns = 7.5. Grid will make 8 rows. */
+    }
+}
+
+@media (max-width: 576px) { /* Phones */
+    .video-grid-container {
+        grid-template-columns: 1fr; /* 1 video per row */
+        grid-template-rows: repeat(15, 1fr); /* 1x15 = 15 videos */
     }
 }
 
@@ -81,3 +147,120 @@ nav a:hover {
     font-size: 1.2em;
     line-height: 1.6;
 }
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity for backdrop */
+    opacity: 0; /* Start fully transparent for fade-in */
+    transition: opacity 0.3s ease-in-out;
+}
+
+.modal.show {
+    display: flex; /* Use flex to center content */
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #fff;
+    color: #333; /* Darker text for white background */
+    margin: auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    text-align: center;
+    font-size: 1.1em;
+    line-height: 1.6;
+    transform: scale(0.9); /* Start slightly smaller for pop effect */
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-content p a {
+    color: #007bff; /* Standard link blue, or choose another */
+    text-decoration: underline;
+}
+
+.modal-content p a:hover {
+    color: #0056b3;
+}
+
+.close-button {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #333; /* Darker on hover for white background */
+    text-decoration: none;
+}
+
+/* Video Wrapper and Play/Pause Button Styles */
+.video-wrapper {
+    position: relative; /* For absolute positioning of the button */
+    width: 100%;
+    height: 100%;
+    display: flex; /* Ensure video fills wrapper */
+    align-items: center;
+    justify-content: center;
+}
+
+.video-wrapper video { /* Ensure video itself is also taking up space */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+.play-pause-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px; /* Adjust size as needed */
+    height: 60px; /* Adjust size as needed */
+    font-size: 24px; /* Adjust icon size */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.play-pause-button:hover {
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Style for when video is playing - button could be less prominent or hidden */
+/* .video-wrapper video:not(:paused) + .play-pause-button { */
+    /* opacity: 0; /* Hide button when video is playing */
+/* } */
+/* .video-wrapper:hover video:not(:paused) + .play-pause-button { */
+    /* opacity: 0.7; /* Show on hover even if playing */
+/* } */
