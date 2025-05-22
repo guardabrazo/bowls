@@ -25,16 +25,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (url && !isPlaceholder) {
                 const videoElement = document.createElement('video');
                 videoElement.src = url;
-                videoElement.muted = true; // Start muted to allow autoplay in most browsers
+                videoElement.muted = false; // Videos will have sound
                 videoElement.loop = true;
                 videoElement.playsInline = true; // Important for iOS
-                videoElement.setAttribute('autoplay', ''); // Autoplay attribute
+                // videoElement.setAttribute('autoplay', ''); // Removed autoplay
 
-                // Attempt to play the video
-                videoElement.play().catch(error => {
-                    console.log(`Video ${index + 1} (${url}) autoplay was prevented: `, error);
-                    // Optionally, add a play button or other UI
+                // Add click listener to play/pause
+                videoElement.addEventListener('click', function() {
+                    if (videoElement.paused) {
+                        videoElement.play().catch(error => {
+                            console.log(`Error playing video ${index + 1} (${url}): `, error);
+                        });
+                    } else {
+                        videoElement.pause();
+                    }
                 });
+
                 videoGrid.appendChild(videoElement);
             } else {
                 console.warn(`Placeholder URL found for video ${index + 1}. Please upload to Cloudinary and update script.js with the correct URL.`);
