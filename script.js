@@ -64,20 +64,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (url && !isPlaceholder) {
                 const videoElement = document.createElement('video');
-                videoElement.src = url;
+                
+                // Apply f_auto,q_auto transformations for the video source
+                const optimizedVideoUrl = url.replace('/video/upload/', '/video/upload/f_auto,q_auto/');
+                videoElement.src = optimizedVideoUrl;
+                
                 videoElement.muted = false;
                 videoElement.loop = true;
                 videoElement.playsInline = true;
-                videoElement.preload = 'metadata'; // Add preload attribute
+                videoElement.preload = 'metadata';
 
-                // Generate poster URL from video URL (Cloudinary specific transformation)
-                // Assumes standard Cloudinary URL structure.
-                // Example: .../upload/v123/video.mp4 -> .../upload/so_0/v123/video.jpg
-                let posterUrl = url.replace('/video/upload/', '/video/upload/so_0/'); // Add start offset 0 for first frame
-                posterUrl = posterUrl.substring(0, posterUrl.lastIndexOf('.')) + '.jpg'; // Change extension
+                // Generate poster URL from the original video URL, adding so_0, f_auto, q_auto and changing format
+                // Example: .../upload/v123/video.mp4 -> .../upload/so_0,f_auto,q_auto/v123/video.jpg
+                const posterTransformations = 'so_0,f_auto,q_auto';
+                let posterUrl = url.replace('/video/upload/', `/video/upload/${posterTransformations}/`);
+                posterUrl = posterUrl.replace(/\.(mp4|webm|mov|avi|wmv|flv|mkv)$/i, '.jpg'); // Replace common video extensions with .jpg
                 videoElement.poster = posterUrl;
 
-                const playButton = document.createElement('button'); // Renamed for clarity
+                const playButton = document.createElement('button');
                 playButton.className = 'play-pause-button'; // CSS class remains for styling
                 playButton.innerHTML = '&#9658;'; // Play icon
 
