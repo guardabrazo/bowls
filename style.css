@@ -362,7 +362,7 @@ body, html {
 }
 
 .toggle-input:checked + .toggle-label {
-    background-color: #007bff; /* Background when toggle is ON */
+    background-color: #000; /* Background when toggle is ON - changed to black */
     color: white; /* Text color for "On" state - though text might be covered */
 }
 
