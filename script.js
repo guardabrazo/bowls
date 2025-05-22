@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const welcomeModal = document.getElementById('welcome-modal');
     const startButton = document.getElementById('start-button');
+    const autoplayToggle = document.getElementById('autoplay-toggle');
+
+    let autoplayIntervalId = null; // For the main loop that tries to start new videos
+    let activeAutoplayTimeouts = []; // To store timeouts for individual video auto-pauses
+    let isAutoplaying = false;
 
     // IMPORTANT: Replace these placeholder URLs with your actual 15 Cloudinary video URLs
     const videoUrls = [
@@ -130,6 +135,97 @@ document.addEventListener('DOMContentLoaded', function() {
                 placeholderDiv.style.backgroundColor = '#222';
                 placeholderDiv.textContent = `Video ${index + 1} URL missing`;
                 videoGrid.appendChild(placeholderDiv);
+            }
+        });
+    }
+
+    // Autoplay functionality
+    function playRandomVideoWithRandomDuration() {
+        if (!isAutoplaying) return;
+
+        const videoElements = Array.from(videoGrid.querySelectorAll('video'));
+        const pausedVideos = videoElements.filter(video => video.paused);
+
+        if (pausedVideos.length === 0) {
+            // console.log("Autoplay: No paused videos available to play.");
+            return;
+        }
+
+        const randomIndex = Math.floor(Math.random() * pausedVideos.length);
+        const videoToPlay = pausedVideos[randomIndex];
+        
+        const minDuration = 5000; // 5 seconds
+        const maxDuration = 30000; // 30 seconds
+        const randomDuration = Math.floor(Math.random() * (maxDuration - minDuration + 1)) + minDuration;
+
+        // console.log(`Autoplay: Playing video for ${randomDuration / 1000}s`);
+        videoToPlay.play().catch(error => console.log('Autoplay play error:', error));
+
+        const timeoutId = setTimeout(() => {
+            if (isAutoplaying) { // Only pause if autoplay is still active
+                 videoToPlay.pause();
+                // console.log("Autoplay: Paused video after duration");
+            }
+            // Remove this timeoutId from the active list
+            activeAutoplayTimeouts = activeAutoplayTimeouts.filter(id => id !== timeoutId);
+        }, randomDuration);
+        
+        activeAutoplayTimeouts.push(timeoutId);
+    }
+
+    function startAutoplay() {
+        if (isAutoplaying) return;
+        isAutoplaying = true;
+        // console.log("Autoplay: Started");
+
+        // Clear any existing main interval and individual video timeouts
+        if (autoplayIntervalId) clearInterval(autoplayIntervalId);
+        activeAutoplayTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+        activeAutoplayTimeouts = [];
+
+        // Pause all videos before starting to ensure a clean slate
+        // const allVideos = videoGrid.querySelectorAll('video');
+        // allVideos.forEach(vid => vid.pause()); // Decided against this to allow user-played videos to continue if desired. Autoplay will only pick paused videos.
+
+
+        // Start the loop to try and play new videos
+        // The interval determines how often a *new* video might be started.
+        // Shorter interval = more videos potentially starting more frequently.
+        autoplayIntervalId = setInterval(playRandomVideoWithRandomDuration, 2000); // Try to start a new video every 2 seconds
+    }
+
+    function stopAutoplay() {
+        if (!isAutoplaying) return;
+        isAutoplaying = false;
+        // console.log("Autoplay: Stopped");
+
+        if (autoplayIntervalId) {
+            clearInterval(autoplayIntervalId);
+            autoplayIntervalId = null;
+        }
+
+        // Clear all scheduled auto-pauses
+        activeAutoplayTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+        activeAutoplayTimeouts = [];
+
+        // Pause all videos that might have been started by autoplay
+        // This will also pause videos played manually if the user wants a full stop.
+        // If only autoplayed videos should stop, more complex tracking is needed.
+        // For now, stopping autoplay means stopping all videos.
+        const allVideos = videoGrid.querySelectorAll('video');
+        allVideos.forEach(vid => {
+            if (!vid.paused) {
+                vid.pause();
+            }
+        });
+    }
+
+    if (autoplayToggle) {
+        autoplayToggle.addEventListener('change', function() {
+            if (this.checked) {
+                startAutoplay();
+            } else {
+                stopAutoplay();
             }
         });
     }

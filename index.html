@@ -10,9 +10,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
+    <div class="nav-left">
+        <div class="toggle-switch">
+            <input type="checkbox" id="autoplay-toggle" class="toggle-input">
+            <label for="autoplay-toggle" class="toggle-label">Auto</label>
+        </div>
+    </div>
+    <div class="nav-right">
         <a href="#" id="about-button">About</a>
-    </nav>
+    </div>
     <div class="video-grid-container">
         <!-- Videos will be added here -->
     </div>
@@ -24,9 +30,10 @@
         </div>
     </div>
 
-    <div id="welcome-modal" class="modal show"> <!-- Add 'show' class to display on load -->
+    <div id="welcome-modal" class="modal show">
         <div class="modal-content">
             <p>A meditation tool built using Google's VEO3</p>
+            <p>Click on individual clips to create your own ensemble...or use <b>auto-play</b>.<div class=""></div></p>
             <button id="start-button" class="modal-button">Start</button>
         </div>
     </div>
