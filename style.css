@@ -176,8 +176,8 @@ body, html {
 }
 
 .modal-content {
-    background-color: #fff;
-    color: #333; /* Darker text for white background */
+    background-color: #000; /* Changed to black */
+    color: #fff; /* Changed to white */
     margin: 0; /* Remove margin for fullscreen */
     padding: 40px; /* Increased padding */
     border-radius: 0; /* No border radius for fullscreen */
@@ -209,16 +209,16 @@ body, html {
 }
 
 .modal-content p a {
-    color: #000; /* Black links */
+    color: #fff; /* Changed to white */
     text-decoration: underline;
 }
 
 .modal-content p a:hover {
-    color: #333; /* Darker gray on hover */
+    color: #ccc; /* Changed to light gray for hover on black bg */
 }
 
 .close-button {
-    color: #333; /* Make X black for white background */
+    color: #fff; /* Changed to white */
     position: absolute;
     top: 10px;
     right: 20px;
@@ -229,7 +229,7 @@ body, html {
 
 .close-button:hover,
 .close-button:focus {
-    color: #333; /* Darker on hover for white background */
+    color: #ccc; /* Changed to light gray for hover on black bg */
     text-decoration: none;
 }
 
@@ -250,7 +250,7 @@ body, html {
 
 #start-button.modal-button { /* Specific styling for start button */
     background-color: transparent;
-    color: #000;
+    color: #fff; /* Changed to white */
     text-decoration: underline;
     padding: 10px 0; /* Adjust padding if only text */
     font-size: 2.4em; /* Match modal text size */
@@ -258,7 +258,7 @@ body, html {
 
 #start-button.modal-button:hover {
     background-color: transparent;
-    color: #555; /* Slightly lighter black on hover */
+    color: #ccc; /* Changed to light gray for hover on black bg */
 }
 
 
